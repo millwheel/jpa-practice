@@ -21,8 +21,9 @@ public class Order {
     private Member member;
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();
+    @OneToOne
     private Delivery delivery;
     private LocalDateTime orderDate;
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-
 }
