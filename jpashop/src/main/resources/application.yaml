@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/shop
-    username: postgres
+    url: jdbc:postgresql://localhost:5432/jpashop
+    username: season
     password: asdf
     driver-class-name: org.postgresql.Driver
     hikari:
