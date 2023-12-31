@@ -12,6 +12,7 @@ public class MemberRepository {
 
 
     @PersistenceContext // Jpa entity manager를 Spring이 생성한 entity manager에 주입해줌
+    // 이것도 @RequiredArgsConstructor 쓰면 대체할 수 있다. 생성자 주입 해줌.
     private EntityManager em;
 
     public void save(Member member){
