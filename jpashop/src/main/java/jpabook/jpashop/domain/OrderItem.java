@@ -2,7 +2,9 @@ package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
 import jpabook.jpashop.domain.item.Item;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -10,6 +12,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @Entity
 @Table(name = "order_item")
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // 임의로 생성하여 서비스 layer에서 생성 못 하도록 막아줌. 도메인 모델 내부에 있는 비즈니스 로직만 써라.
 public class OrderItem {
     @Id @GeneratedValue
     @Column(name = "order_item_id")
