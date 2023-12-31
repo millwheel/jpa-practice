@@ -5,6 +5,7 @@ import jpabook.jpashop.domain.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 @RequiredArgsConstructor
 public class OrderRepository {
@@ -18,4 +19,5 @@ public class OrderRepository {
     public Order findOne(Long id){
         return em.find(Order.class, id);
     }
+
 }
