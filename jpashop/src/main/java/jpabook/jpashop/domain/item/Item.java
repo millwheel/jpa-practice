@@ -31,8 +31,8 @@ public abstract class Item {
     // setter를 가지고 바깥에서 변경해서 넣는 것이 아니라
     // 이렇게 도메인 모델 안에서 값 변경 로직을 작성해준다. 
     // 이것이 가장 객체 지향적인 방식
-    public void removeStock(int quentity){
-        int restStock = this.stockQuantity - quentity;
+    public void removeStock(int quantity){
+        int restStock = this.stockQuantity - quantity;
         if (restStock < 0){
             throw new NotEnoughStockException("need more stock");
         }
