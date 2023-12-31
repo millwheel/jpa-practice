@@ -27,6 +27,9 @@ public class Order {
     private Delivery delivery;
     private LocalDateTime orderDate;
     private OrderStatus status;
+    
+    // 연관관계 편의 메서드 (양방향 연관관계) 원자적으로 주입을 묶어줌.
+    // Setter 쓰지 말고 이런 식으로 구현
     public void setMember(Member member) {
         this.member = member;
         member.getOrders().add(this);
