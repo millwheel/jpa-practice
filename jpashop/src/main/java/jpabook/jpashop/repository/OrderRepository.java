@@ -77,7 +77,7 @@ public class OrderRepository {
                                 " join fetch o.delivery d" +
                                 " join fetch o.orderItems oi" +
                                 " join fetch oi.item i", Order.class)
-                .setFirstResult(1) // out of memory 뜰 수도 있음.
+                .setFirstResult(0) // out of memory 뜰 수도 있음.
                 .setMaxResults(100) // 이렇게 작성해도 DB에서 10000개 가져온 후, 메모리에서 100개 페이징 처리하게 된다.
                 .getResultList(); // fetch join을 하는 순간 order의 기준이 모두 틀어지게 됨. 1대다 fetch join 할 때는 페이징 못 씀
     }
