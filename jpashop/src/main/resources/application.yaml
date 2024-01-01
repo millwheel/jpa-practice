@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/jpashop
+    url: jdbc:postgresql://localhost:5432/jpa
     username: season
     password: asdf
     driver-class-name: org.postgresql.Driver

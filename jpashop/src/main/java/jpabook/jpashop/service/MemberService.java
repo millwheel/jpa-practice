@@ -27,6 +27,15 @@ public class MemberService {
         return member.getId();
     }
 
+    @Transactional
+    public void update(Long id, String name) {
+        Member member = memberRepository.findOne(id);
+        member.setName(name);
+        // JPA가 DB에서 영속성 컨텍스트 올려주고
+        // JPA의 변경 감지에 의해 name 변경이 감지됨
+        // 트랜잭션이 끝나는 시점에 JPA가 Flush를 실행. 영속성 컨텍스트를 커밋한다.
+    }
+
     private void validateDuplicateMember(Member member) {
         List<Member> findMembers = memberRepository.findByName(member.getName());
         if (!findMembers.isEmpty()){
