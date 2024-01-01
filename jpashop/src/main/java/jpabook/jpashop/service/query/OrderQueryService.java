@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true) // OSIV를 끈 상태에서는 이렇게 트랜잭션을 사용하여 호출하도록 한다. 트랜잭션 내에서는 영속성 컨텍스트가 살아있음
 @RequiredArgsConstructor
 @Service
+// 실시간 데이터 요청이 많은 어플리케이션에서는 OSIV를 끄는 것이 좋다. 데이터 커넥션을 빠르게 반환
 public class OrderQueryService {
 
     private final OrderRepository orderRepository;
