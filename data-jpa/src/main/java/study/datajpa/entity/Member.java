@@ -15,6 +15,10 @@ public class Member {
     private Long id;
     private String username;
 
+    protected Member(){
+
+    }
+
     public Member(String username) {
         this.username = username;
     }
