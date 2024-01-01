@@ -68,4 +68,15 @@ public class OrderRepository {
                                 " join fetch o.delivery d", Order.class)
                 .getResultList();
     }
+
+    public List<Order> findAllWithItem() {
+        // distinct 써주면 JPA가 order를 확인하고 orderid를 기준으로 중복을 제거하준다.
+        return em.createQuery(
+                        "select distinct o from Order o" +
+                                " join fetch o.member m" +
+                                " join fetch o.delivery d" +
+                                " join fetch o.orderItems oi" +
+                                " join fetch oi.item i", Order.class)
+                .getResultList();
+    }
 }

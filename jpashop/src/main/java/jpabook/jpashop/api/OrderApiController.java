@@ -25,4 +25,14 @@ public class OrderApiController {
                 .collect(Collectors.toList());
         return result;
     }
+
+    @GetMapping("/api/v3/orders")
+    public List<OrderDto> ordersV3() {
+        // 쿼리 한 방에 나감
+        List<Order> orders = orderRepository.findAllWithItem();
+        List<OrderDto> result = orders.stream()
+                .map(o -> new OrderDto(o))
+                .collect(Collectors.toList());
+        return result;
+    }
 }
