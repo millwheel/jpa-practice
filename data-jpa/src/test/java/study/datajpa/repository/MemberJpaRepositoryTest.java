@@ -8,7 +8,6 @@ import org.springframework.test.annotation.Rollback;
 import study.datajpa.entity.Member;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -23,6 +22,6 @@ public class MemberJpaRepositoryTest {
         Member findMember = memberJpaRepository.find(savedMember.getId());
         assertThat(findMember.getId()).isEqualTo(member.getId());
         assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
-        assertThat(findMember).isEqualTo(member); //JPA 􀧂􀱭􀱭 􀘲􀩌􀢿 􀠁􀩢
+        assertThat(findMember).isEqualTo(member);
     }
 }
