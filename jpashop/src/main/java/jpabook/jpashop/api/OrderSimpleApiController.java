@@ -1,9 +1,11 @@
 package jpabook.jpashop.api;
 
 import jpabook.jpashop.domain.Order;
+import jpabook.jpashop.dto.OrderSimpleQueryDto;
 import jpabook.jpashop.dto.SimpleOrderDto;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
+import jpabook.jpashop.repository.OrderSimpleQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,7 @@ import static java.util.stream.Collectors.toList;
 public class OrderSimpleApiController {
 
     private final OrderRepository orderRepository;
+    private final OrderSimpleQueryRepository orderSimpleQueryRepository;
 
     @GetMapping("/api/v1/simple-orders")
     public List<Order> ordersV1() {
@@ -49,5 +52,11 @@ public class OrderSimpleApiController {
                 .map(o -> new SimpleOrderDto(o))
                 .collect(toList());
         return result;
+    }
+
+    @GetMapping("/api/v4/simple-orders")
+    public List<OrderSimpleQueryDto> ordersV4() {
+        // 이렇게 DTO로 바로 가져오는 방식은 재사용성이 조금 떨어진다.
+        return orderSimpleQueryRepository.findOrderDtos();
     }
 }
