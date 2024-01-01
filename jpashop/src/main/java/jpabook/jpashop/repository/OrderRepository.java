@@ -56,4 +56,15 @@ public class OrderRepository {
         }
         return query.getResultList();
     }
+
+    public List<Order> findAllWithMemberDelivery() {
+        // 성능 최적화
+        // fetch join <- jpa에만 있는 문법
+        // 이것을 사용하면 proxy 객체도 아니고 실제 Java 객체에 값을 다 채워서 가져 온다.
+        return em.createQuery(
+                        "select o from Order o" +
+                                " join fetch o.member m" +
+                                " join fetch o.delivery d", Order.class)
+                .getResultList();
+    }
 }
