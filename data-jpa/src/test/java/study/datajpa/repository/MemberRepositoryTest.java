@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
+import study.datajpa.entity.Team;
 
 import java.util.List;
 
@@ -37,6 +39,8 @@ public class MemberRepositoryTest {
         memberRepository.save(m2);
 
         List<Member> result = memberRepository.findUser("AAA", 10);
+        List<String> usernameList = memberRepository.findUsernameList();
         assertThat(result.get(0)).isEqualTo(m1);
     }
+
 }
