@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
-import study.datajpa.dto.MemberDto;
+import study.datajpa.dto.MemberDtoWithTeam;
 import study.datajpa.entity.Member;
 
 import java.util.Collection;
@@ -27,9 +27,9 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     List<String> findUsernameList();
 
     // 쿼리로 DTO로 가져오기
-    @Query("select new study.datajpa.dto.MemberDto(m.id, m.username, t.name) " +
+    @Query("select new study.datajpa.dto.MemberDtoWithTeam(m.id, m.username, t.name) " +
             "from Member m join m.team t")
-    List<MemberDto> findMemberDto();
+    List<MemberDtoWithTeam> findMemberDto();
 
     // 컬렉션으로 조회하기 (List 등)
     @Query("select m from Member m where m.username in :names")

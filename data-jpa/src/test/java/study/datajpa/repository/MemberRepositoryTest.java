@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.assertj.core.api.AssertionsForClassTypes;
-import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,11 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
-import study.datajpa.dto.MemberDto;
+import study.datajpa.dto.MemberDtoWithTeam;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
-import java.awt.print.Pageable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -84,7 +82,7 @@ public class MemberRepositoryTest {
         List<Member> top3By = memberRepository.findTop3By();
 
         // Page Dto로 그대로 변환하기 -> json으로 자동으로 변환된다.
-        Page<MemberDto> memberDtos = page.map(m -> new MemberDto(m.getId(), m.getUsername(), null));
+        Page<MemberDtoWithTeam> memberDtos = page.map(m -> new MemberDtoWithTeam(m.getId(), m.getUsername(), null));
 
         //then
         List<Member> content = page.getContent();
