@@ -161,4 +161,21 @@ public class MemberRepositoryTest {
         }
     }
 
+    @Test
+    public void queryHint() throws Exception {
+        //given
+        memberRepository.save(new Member("member1", 10));
+        em.flush();
+        em.clear();
+
+        PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+        //when
+        Page<Member> members = memberRepository.findReadOnlyByUsername("member1", pageRequest);
+
+        for (Member member: members) {
+            System.out.println(member);
+            member.setUsername("member2");
+        }
+        em.flush(); // Update Query 실행하지 않음
+    }
 }
