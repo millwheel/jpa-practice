@@ -178,4 +178,8 @@ public class MemberRepositoryTest {
         }
         em.flush(); // Update Query 실행하지 않음
     }
+
+    @Test void callCustom(){
+        List<Member> memberCustom = memberRepository.findMemberCustom();
+    }
 }

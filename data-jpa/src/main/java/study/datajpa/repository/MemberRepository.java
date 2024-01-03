@@ -14,7 +14,7 @@ import java.util.List;
 
 // Spring Data JPA가 구현 클래스를 알아서 프록시로 자동으로 만들어서 붙여줌
 // @Repository 생략 가능.
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
     // 쿼리 메서드
     List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 
