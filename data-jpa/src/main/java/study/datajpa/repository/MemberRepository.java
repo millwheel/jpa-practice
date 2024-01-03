@@ -1,5 +1,6 @@
 package study.datajpa.repository;
 
+import jakarta.persistence.LockModeType;
 import jakarta.persistence.QueryHint;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,8 +21,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 쿼리 정의하기, 문법은 JPQL
     @Query("select m from Member m where m.username= :username and m.age = :age")
     List<Member> findUser(@Param("username") String username, @Param("age") int age);
-
-    List<Member> findByUsername(String username);
 
     // 쿼리로 값만 조회
     @Query("select m.username from Member m")
@@ -64,5 +63,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // readonly를 쓰면 변경 감지 체크를 하지 않는다. 성능이 살짝 좋아진다. 사실 큰 차이는 안 남.
     @QueryHints(value = { @QueryHint(name = "org.hibernate.readOnly", value = "true")}, forCounting = true)
     Page<Member> findReadOnlyByUsername(String name, Pageable pageable);
+
+    // lock 사용 - 실시간 트래픽이 많으면 해당 락을 사용하면 안 된다.
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    List<Member> findByUsername(String name);
 
 }
