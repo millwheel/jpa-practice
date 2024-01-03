@@ -4,11 +4,15 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
+import java.awt.print.Pageable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,4 +61,31 @@ public class MemberRepositoryTest {
         }
     }
 
+    @Test
+    public void page() throws Exception {
+        //given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 10));
+        memberRepository.save(new Member("member3", 10));
+        memberRepository.save(new Member("member4", 10));
+        memberRepository.save(new Member("member5", 10));
+
+        //when
+        PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+        Page<Member> page = memberRepository.findByAge(10, pageRequest);
+        List<Member> top3By = memberRepository.findTop3By();
+
+        // Page Dto로 그대로 변환하기 -> json으로 자동으로 변환된다.
+        Page<MemberDto> memberDtos = page.map(m -> new MemberDto(m.getId(), m.getUsername(), null));
+
+        //then
+        List<Member> content = page.getContent();
+        System.out.println(top3By);
+        assertThat(content.size()).isEqualTo(3);
+        assertThat(page.getTotalElements()).isEqualTo(5); //전체 데이터 수
+        assertThat(page.getNumber()).isEqualTo(0);
+        assertThat(page.getTotalPages()).isEqualTo(2);
+        assertThat(page.isFirst()).isTrue();
+        assertThat(page.hasNext()).isTrue(); //다음 페이지가 있는가?
+    }
 }
