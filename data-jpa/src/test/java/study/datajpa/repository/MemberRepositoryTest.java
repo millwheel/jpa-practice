@@ -1,6 +1,10 @@
 package study.datajpa.repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.assertj.core.api.AssertionsForClassTypes;
+import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +28,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
+    @Autowired
+    TeamRepository teamRepository;
+    @PersistenceContext // 영속성 컨텍스트
+    EntityManager em;
 
     @Test
     public void testMember() {
@@ -62,7 +70,7 @@ public class MemberRepositoryTest {
     }
 
     @Test
-    public void page() throws Exception {
+    public void page() {
         //given
         memberRepository.save(new Member("member1", 10));
         memberRepository.save(new Member("member2", 10));
@@ -88,4 +96,69 @@ public class MemberRepositoryTest {
         assertThat(page.isFirst()).isTrue();
         assertThat(page.hasNext()).isTrue(); //다음 페이지가 있는가?
     }
+
+    @Test
+    public void bulkUpdate() {
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+        // 벌크성 쿼리를 사용하면 JPA 영속성 컨텍스트를 무시하고 바로 DB에 쿼리를 날리게 된다.
+        int resultCount = memberRepository.bulkAgePlus(20);
+        // 벌크 연산 사용 이후에는 영속성 컨텍스트를 모두 초기화 해줘야 한다.
+        em.flush(); // 여태 변경 내용 DB 반영
+        em.clear(); // 영속성 컨텍스트 모두 날려버림
+
+        List<Member> result = memberRepository.findByUsername("member5");
+        System.out.println(result.get(0));
+
+        AssertionsForClassTypes.assertThat(resultCount).isEqualTo(3);
+    }
+
+    @Test
+    public void findMemberLazy() throws Exception {
+        //given
+        //member1 -> teamA
+        //member2 -> teamB
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        memberRepository.save(new Member("member1", 10, teamA));
+        memberRepository.save(new Member("member2", 20, teamB));
+        em.flush();
+        em.clear();
+        //when
+        List<Member> members = memberRepository.findAll();
+
+        //then
+        // N + 1 문제 발생
+        for (Member member : members) {
+            member.getTeam().getName();
+        }
+    }
+
+    @Test
+    public void findMemberFetchJoin() throws Exception {
+        //given
+        //member1 -> teamA
+        //member2 -> teamB
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        memberRepository.save(new Member("member1", 10, teamA));
+        memberRepository.save(new Member("member2", 20, teamB));
+        em.flush();
+        em.clear();
+        //when
+        List<Member> members = memberRepository.findMemberFetchJoin();
+        //then
+        // N + 1 문제 발생
+        for (Member member : members) {
+            member.getTeam().getName();
+        }
+    }
+
 }

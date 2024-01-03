@@ -46,4 +46,17 @@ public class MemberJpaRepositoryTest {
         long deletedCount = memberJpaRepository.count();
         assertThat(deletedCount).isEqualTo(0);
     }
+
+    @Test
+    public void bulkUpdate() {
+        memberJpaRepository.save(new Member("member1", 10));
+        memberJpaRepository.save(new Member("member2", 19));
+        memberJpaRepository.save(new Member("member3", 20));
+        memberJpaRepository.save(new Member("member4", 21));
+        memberJpaRepository.save(new Member("member5", 40));
+        // 벌크성 쿼리를 사용하면 JPA 영속성 컨텍스트를 무시하고 바로 DB에 쿼리를 날리게 된다.
+        int resultCount = memberJpaRepository.bulkAgePlus(20);
+        //
+        assertThat(resultCount).isEqualTo(3);
+    }
 }
