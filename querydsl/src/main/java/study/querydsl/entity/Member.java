@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "username", "age"})
+// 무한 루프 타지 않게 toString은 연관관계 필드는 넣지 않는다.
 public class Member {
     @Id
     @GeneratedValue
