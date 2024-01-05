@@ -36,4 +36,12 @@ public class MemberController {
         return memberRepository.searchWithPage(condition, pageRequest);
     }
 
+    @GetMapping("/v4/members")
+    public Page<MemberTeamDto> searchMemberWithPageAdvanced(@RequestParam(defaultValue = "0") int page,
+                                                    @RequestParam(defaultValue = "10") int size,
+                                                    MemberSearchCondition condition) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return memberRepository.searchWithPageAdvanced(condition, pageRequest);
+    }
+
 }
