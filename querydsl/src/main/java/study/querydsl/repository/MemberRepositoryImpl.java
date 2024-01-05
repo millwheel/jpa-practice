@@ -73,14 +73,14 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                 .fetch();
 
         long total = queryFactory
-                .selectFrom(member)
+                .select(member.count())
+                .from(member)
                 .leftJoin(member.team, team)
                 .where(usernameEq(condition.getUsername()),
                         teamNameEq(condition.getTeamName()),
                         ageGoe(condition.getAgeGoe()),
                         ageLoe(condition.getAgeLoe()))
-                .fetch()
-                .size();
+                .fetchFirst();
 
         return new PageImpl<>(results, pageable, total);
     }
