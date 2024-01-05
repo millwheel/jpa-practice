@@ -1,4 +1,4 @@
-package study.querydsl;
+package study.querydsl.dto;
 
 import lombok.Data;
 
