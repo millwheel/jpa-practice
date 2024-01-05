@@ -33,7 +33,7 @@ public class MemberController {
                                                     @RequestParam(defaultValue = "10") int size,
                                                     MemberSearchCondition condition) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        return memberRepository.searchPageSimple(condition, pageRequest);
+        return memberRepository.searchWithPage(condition, pageRequest);
     }
 
 }
